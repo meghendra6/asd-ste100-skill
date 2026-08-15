@@ -1,6 +1,6 @@
 ---
 name: asd-ste100
-description: "Use when text must be parsed without a human to resolve ambiguity — tool descriptions, error messages, inter-agent instructions, system prompts, status reports — and misreading has a real cost, or when text reads as dense, hedged, or easy to misparse. Handles English and Korean: the language of the target text selects the ruleset. Triggers: disambiguate, STE100 rewrite, apply Simplified Technical English, plain-language rewrite, controlled-language rewrite, rewrite so an agent cannot misread this, 문장 다듬기, 쉬운 한국어로, 중의성 제거, 기계가 오독하지 않게 고치기. Not for creative or marketing copy."
+description: "Use when English or Korean text must be parsed without a human to resolve ambiguity — tool descriptions, error messages, inter-agent instructions, prompts, status reports — and misreading has a real cost, or when text reads as dense, hedged, or easy to misparse. Triggers: disambiguate, STE100 rewrite, apply Simplified Technical English, plain-language rewrite, rewrite so an agent cannot misread this, 문장 다듬기, 쉬운 한국어로, 중의성 제거, 기계가 오독하지 않게. Not for creative or marketing copy."
 version: 0.6.0
 ---
 
@@ -42,11 +42,7 @@ The two modes and the structural/lexical split are the same distinction seen fro
 
 ## Source and Scope
 
-This skill encodes the **rule categories** of ASD-STE100 Issue 9 (Jan 2025): 53 writing rules across 9 sections covering word choice, grammar, sentence structure, and style, backed by a dictionary of ~900 approved words (one meaning, one part of speech each) and ~1,200 words to avoid with suggested replacements. See `references/writing-rules.md` for the full rule summary and citations.
-
-It does **not** reproduce ASD's ~900-word approved dictionary verbatim. ASD-STE100 is free to obtain, but it is not free to redistribute: Issue 9, page 2 states that "no reproduction or publication of it, in whole or in part, shall be made without the written authority of an officer of ASD," and grants free reproduction rights only to eight listed categories (ASD/AIA/AIAC member associations and their member companies and customers, member-state defence ministries, A4A, airworthiness authorities, and universities and research institutes for educational purposes). This project is in none of them, so the dictionary stays out of this repo.
-
-Instead, this skill applies the *underlying principle* (pick the plainest, most common word available and use it the same way every time) rather than checking against a fixed word list. When exact ASD-approved wording matters (e.g. actual aircraft maintenance documentation), get the standard and check word-by-word against the real dictionary. Request it from the [official downloads page](https://www.asd-ste100.org/STE_downloads.html) — note that this is a request form that emails you a link, not a direct download.
+This skill encodes the **rule categories** of ASD-STE100 Issue 9 (Jan 2025): 53 writing rules across 9 sections, backed by a dictionary of ~900 approved words (one meaning, one part of speech each). It does **not** reproduce that dictionary: the standard is free to obtain but not free to redistribute, so this skill applies the underlying principle — pick the plainest, most common word available and use it the same way every time — instead of checking a fixed word list. When exact ASD-approved wording matters (e.g. actual aircraft maintenance documentation), check word-by-word against [the official standard](https://www.asd-ste100.org/STE_downloads.html). The full rule summary, citations, and the redistribution terms that keep the dictionary out of this repo: `references/writing-rules.md`.
 
 **The Korean ruleset is this skill's own adaptation, not a standard.** There is no Korean edition of ASD-STE100 and no equivalent Korean controlled-language standard. `references/rules-ko.md` transfers STE's structural discipline to Korean grammar and adds rules for ambiguity sources Korean has and English does not (omitted subjects and objects, clause chaining, the double passive). It deliberately does not follow public-sector plain-Korean guidelines on points where they conflict with technical writing — most visibly, it keeps established technical terms in English instead of translating them into Korean.
 
@@ -121,11 +117,10 @@ Follow the table with a one-line note on anything you deliberately did **not** s
 - Present the Korean ruleset as ASD-STE100 or as any official standard. STE is English-only. The Korean rules transfer its discipline, and the output must not claim more.
 - Simplify creative, marketing, or persuasive copy where voice and nuance are the point.
 - Silently drop a safety condition, exception, or scope qualifier to shorten a sentence — it will flag the trade-off instead.
-- Convert "may have failed" into "failed", or "~였을 수 있습니다" into "~였습니다" — losing a hedge changes the claim.
-- Resolve a genuine ambiguity by picking the more plausible reading. If context does not decide between two readings, the output uses a phrasing that is true and complete under both, or flags both with `Ambiguous:` — silently choosing one is adding information.
+- Resolve a genuine ambiguity by picking the more plausible reading — the output covers both readings in one phrasing, or flags them with `Ambiguous:` (the test is in Process step 5).
 - Guarantee an aerospace/defense-grade STE-compliant document. This is a general-purpose clarity tool inspired by STE, not a certified STE authoring tool.
-- Make weak content true or useful. These rules fix the *form* of a text, not its substance. A hollow paragraph rewritten under them becomes a clean, short, well-punctuated hollow paragraph. If the text has nothing to say, no rewrite fixes that — say so instead of polishing it.
-- Shorten past the point of clarity. Cutting words is not the goal — removing ambiguity is. Past a certain point compression starts costing the reader time rather than saving it, so stop when the sentence is unambiguous, not when it is shortest.
+- Make weak content true or useful. These rules fix a text's *form*, not its substance — a hollow paragraph comes out clean, short, and still hollow. Say so instead of polishing it.
+- Shorten past the point of clarity. The goal is removing ambiguity, not cutting words — stop when the sentence is unambiguous, not when it is shortest.
 
 ## Additional Resources
 
