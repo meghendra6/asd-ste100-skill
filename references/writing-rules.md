@@ -12,6 +12,10 @@ ASD-STE100 is a controlled natural language, first released in 1986 (as AECMA Do
 - **A dictionary** of roughly 900 approved words, each restricted to one meaning and one part of speech, plus roughly 1,200 words to avoid with suggested replacements.
 - **A terminology allowance**: organizations may define their own dictionary of approved technical nouns and verbs beyond the base ~900 words, for domain-specific vocabulary the base dictionary can't cover.
 
+## Reproduction and Redistribution
+
+ASD-STE100 is free to obtain, but it is not free to redistribute. Issue 9, page 2 states that "no reproduction or publication of it, in whole or in part, shall be made without the written authority of an officer of ASD," and grants free reproduction rights only to eight listed categories (ASD/AIA/AIAC member associations and their member companies and customers, member-state defence ministries, A4A, airworthiness authorities, and universities and research institutes for educational purposes). This project is in none of them, so the approved dictionary stays out of this repo. Request the standard from the [official downloads page](https://www.asd-ste100.org/STE_downloads.html) — a request form that emails you a link, not a direct download.
+
 ## Rule Categories (Paraphrased)
 
 **Word choice**
