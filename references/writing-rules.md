@@ -45,6 +45,15 @@ ASD-STE100 is a controlled natural language, first released in 1986 (as AECMA Do
 **Safety instructions**
 - Safety-critical instructions must open with a clear command or condition, not be buried mid-sentence.
 
+## Related Standards
+
+ASD-STE100 was built for aircraft maintenance manuals, and its strictest rules earn their cost only where a wrong parse is expensive. For human-facing general documentation, two neighbors are worth knowing:
+
+- **ISO 24495-1 (Plain language)** — language-neutral plain-language principles (relevant, findable, understandable, usable). A better fit for documents whose reader can ask a follow-up question, and a usable base for adapting this skill's discipline to languages other than English.
+- **Google and Microsoft technical writing style guides** — general software documentation conventions: less strict than STE, wider vocabulary, better suited to READMEs and long-form docs than a controlled language is.
+
+This skill's Strict mode targets machine-parsed strings, where STE's discipline fits. STE-flavored mode already moves in the direction these general-purpose guides recommend.
+
 ## Why This Skill Repurposes STE for Agent Output
 
 STE was designed to eliminate ambiguity for a reader who cannot ask a follow-up question — a technician on a tarmac, working from a manual, with no author to call. An AI agent parsing another agent's output, a tool description, or a system message is in the same position: no back-channel to resolve "does this passive-voice sentence mean the caller does X, or the callee does X?" The same rule set that protects an airline mechanic from a misread torque spec protects a downstream agent from a misread instruction.
@@ -57,3 +66,6 @@ STE was designed to eliminate ambiguity for a reader who cannot ask a follow-up 
 - [Simplified Technical English — Wikipedia](https://en.wikipedia.org/wiki/Simplified_Technical_English)
 - [TechScribe — ASD-STE100 Simplified Technical English](https://www.techscribe.co.uk/techw/asd-simplified-technical-english.htm)
 - [SKYbrary — Simplified Technical English (STE)](https://skybrary.aero/articles/simplified-technical-english-ste)
+- [ISO 24495-1:2023 — Plain language, Part 1: Governing principles and guidelines](https://www.iso.org/standard/78907.html)
+- [Google developer documentation style guide](https://developers.google.com/style)
+- [Microsoft Writing Style Guide](https://learn.microsoft.com/en-us/style-guide/welcome/)

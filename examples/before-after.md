@@ -85,6 +85,22 @@ Two deliberate calls worth stating rather than hiding:
 
 Flavored mode kept the explanatory rhythm and did not force one fixed term per concept. It still cut the marketing adjectives, the semicolon, and the length.
 
+### Example E — Genuine ambiguity (the `Ambiguous:` line)
+
+**Before:**
+> The client sends the token to the server, and then it logs the request.
+
+**Violations flagged:**
+- Two actions in one sentence.
+- A pronoun ("it") whose actor the sentence does not name.
+
+**After:**
+> The client sends the token to the server. Then it logs the request.
+>
+> Ambiguous: "it" can be the client or the server. The source does not say which system logs the request.
+
+The normal STE fix for an unclear pronoun is to replace it with the actor's name. Here that fix is blocked: the source never names the actor, and both readings are plausible. Writing "the server logs the request" would read perfectly and might be wrong — a rewrite that resolves an ambiguity has quietly added a claim, which is the same failure as inventing a fact. The `Ambiguous:` line keeps the gap visible so a human (or the source's author) can close it.
+
 ## How to Read These Examples
 
 Part 1 shows the actual rules this skill is built on. Part 2 shows the transfer: the same discipline — one meaning per word, active voice, simple tense, one instruction per sentence, explicit conditions instead of buried subordinate clauses — makes machine-to-machine and cross-language text safer to parse, not just aircraft manuals.

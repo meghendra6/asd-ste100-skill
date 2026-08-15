@@ -1,7 +1,7 @@
 ---
 name: asd-ste100
 description: "Use when English text must be parsed without a human to resolve ambiguity — tool descriptions, error messages, inter-agent instructions, system prompts, status reports — and misreading has a real cost, or when text reads as dense, hedged, or easy to misparse. Triggers: disambiguate, STE100 rewrite, apply Simplified Technical English, plain-language rewrite, controlled-language rewrite, rewrite so an agent cannot misread this. Not for creative or marketing copy."
-version: 0.4.0
+version: 0.5.0
 ---
 
 # Simplified Technical English (ASD-STE100)
@@ -47,6 +47,7 @@ Apply the structural rules with confidence. Apply the lexical rules as a directi
 
 | Rule | Do | Don't |
 |---|---|---|
+| Main point first | "Stop the job. The queue is full, and a full queue drops new tasks." — the result, command, or warning opens the paragraph | Build-up that delivers the point in the last sentence — the reader must finish the paragraph to learn what it is about. (This generalizes STE's own rule that a safety instruction must open with a clear command or condition.) |
 | Active voice | "The agent deletes the file." | "The file is deleted (by the agent)." — unless the actor is genuinely unknown or irrelevant |
 | No phrasal verbs (Rule 9.3) | "Remove the panel." / "Start the job." | "Take off the panel." / "Spin up the job." — a two-word verb has meanings the parts do not predict |
 | One instruction per sentence | "Open the file. Read line 3." | "Open the file and read line 3, then check if it matches." |
@@ -67,6 +68,20 @@ Apply the structural rules with confidence. Apply the lexical rules as a directi
 | Verb, not noun (Rule 3.7) | "Analyze the log." | "Perform an analysis of the log." — a noun form of an action makes the sentence longer and hides who acts | Rule 3.7 says "use an **approved** verb to describe an action." Preferring the verb form is safe to apply anywhere; knowing which verb is the approved one needs the dictionary. |
 | Domain terms | Keep necessary technical nouns/verbs, but define them once if not common English (STE allows a project-specific glossary beyond its base dictionary) | Use jargon without ever defining it | The glossary allowance is real STE, but the base dictionary it extends is absent. |
 
+### Project glossary — restores the lexical layer
+
+The lexical rules above are weak without a word list. A project can supply its own: a table of approved words and the synonyms they replace, kept in the project's `CLAUDE.md` or in a file the user names. When such a table exists, enforce it as a hard rule, not a preference — it plays the role of ASD's dictionary for that project, under STE's own terminology allowance.
+
+```markdown
+| Use | Instead of |
+|---|---|
+| start | initiate, commence, spin up, kick off |
+| check | verify, validate, confirm |
+| remove | delete, detach, take off |
+```
+
+Enforce it in both directions: use only the approved word in rewrites, and treat any listed synonym in the source as a violation to rewrite.
+
 ### Simple tenses — apply with one exception
 
 STE permits infinitive, imperative, simple present, simple past, simple future, and past participle as adjective. It excludes present perfect and other compound forms: "we received the report", not "we have received the report".
@@ -75,14 +90,17 @@ Aircraft manuals never need present perfect, so the exclusion costs the standard
 
 ## Scan Checklist
 
-These six habits cover most of what makes machine-written English hard to parse. Each one is mechanical: you can point at the exact word or punctuation mark that breaks the rule, with no judgment call. Scan for all six before you rewrite anything.
+These nine habits cover most of what makes machine-written English hard to parse. Each one is mechanical: you can point at the exact word, punctuation mark, or sentence position that breaks the rule, with no judgment call. Scan for all nine before you rewrite anything.
 
 1. **Synonym rotation** — the same thing gets several names in one document ("the user", "the customer", "the client"). The reader cannot tell whether they are one thing or three. Fix: pick one name, use it every time.
 2. **Hedge stacking** — helper verbs and qualifiers pile up until the sentence asserts nothing ("it is important to note that this may potentially help to improve"). Fix: state the claim, or delete it.
 3. **Nominalization** — an action frozen into a noun ("perform an analysis of", "provides assistance to"). Fix: use the verb ("analyze", "helps").
-4. **Marketing adjectives** — words that claim quality instead of showing it: seamless, robust, powerful, cutting-edge, effortless, blazing-fast. Fix: delete, or replace with the measurement that earns the claim.
+4. **Marketing adjectives and candor markers** — words that claim quality instead of showing it: seamless, robust, powerful, cutting-edge, effortless, blazing-fast. The same failure with sincerity instead of quality: honestly, frankly, to be clear, the hard truth is. Fix: delete, or replace with the measurement that earns the claim — the sentence must carry the claim on its own.
 5. **Run-on sentences** — several ideas joined by semicolons or em dashes. Fix: one idea per sentence.
 6. **Soft phrasal verbs** — spin up, reach out, dive into, kick off. Fix: use the single plain verb (start, contact, read, begin).
+7. **Buried lede** — the paragraph's claim, command, or warning arrives in the last sentence, after the build-up. Fix: move it to the first sentence and let the explanation follow.
+8. **"Not X, but Y" framing** — the sentence spends its first half on a claim it then rejects ("It's not a cache problem, it's a race condition."). Fix: state the positive claim ("It is a race condition."). Keep the contrast only when the misconception is real, named, and worth correcting.
+9. **Coined labels** — a new term invented and then used as if established ("the trust ladder", "the evidence boundary"). Fix: replace it with a plain description, or define it once at first use and reuse it unchanged.
 
 ## Process
 
@@ -92,6 +110,7 @@ These six habits cover most of what makes machine-written English hard to parse.
 4. Rewrite each flagged sentence to fix the violation while preserving the original meaning exactly. If a rewrite would drop necessary precision (a safety condition, a scope qualifier, a number), keep the longer phrasing and flag it instead of silently simplifying.
    - **Check modality before you commit to a rewrite.** Hedges ("may", "could", "sometimes", "is likely to") carry the author's confidence, and confidence is content. A shorter sentence that upgrades a hedge to a fact is not a simplification — it is a different claim. This is the most common way a well-intentioned STE rewrite goes wrong, because hedges are exactly what a length cap tempts you to cut.
    - Never add a fact the source did not state. A rewrite that reads better because it supplies a cause, a frequency, or a mechanism has stopped being a rewrite.
+   - **Never resolve a genuine ambiguity by choosing a reading.** When a sentence has two readings and the context does not decide between them, picking the more plausible one adds a claim the source did not make — the same failure as inventing a fact, in quieter form. Keep the ambiguity visible: flag it with an `Ambiguous:` line (see Output Format), and ask the author when a channel exists.
 5. Output the rewritten text (see Output Format). Keep the mode choice and the rule analysis internal unless the user asked to see them.
 6. If the input already complies, say so — do not force changes onto compliant text.
 
@@ -99,7 +118,10 @@ These six habits cover most of what makes machine-written English hard to parse.
 
 **Default: the rewritten text, and nothing else.** Most callers want a result they can paste straight into a tool description, an error string, or a prompt. Print the simplified text on its own. Do not add a preamble about this skill, a mode announcement, a violation count, a summary of what changed, a rule table, or a closing offer to explain further.
 
-The one permitted addition: if step 4 kept a longer phrasing on purpose, add a single line after the text, prefixed `Kept as-is:`, naming the phrase and the precision that would have been lost. Omit the line when there is nothing to report.
+Two permitted additions, each a single line after the text, omitted when there is nothing to report:
+
+- `Kept as-is:` — step 4 kept a longer phrasing on purpose; name the phrase and the precision that would have been lost.
+- `Ambiguous:` — the source has a sentence with two readings that context cannot resolve; name both readings. Do not silently rewrite to one of them — choosing a reading adds a claim the source did not make.
 
 **On request: the rule table.** When the user asks to see the reasoning — "show the diff", "which rules did it break", "explain the changes", "before/after" — output this table instead:
 
@@ -128,6 +150,7 @@ Follow the table with a one-line note on anything you deliberately did **not** s
 - Simplify creative, marketing, or persuasive copy where voice and nuance are the point.
 - Silently drop a safety condition, exception, or scope qualifier to shorten a sentence — it will flag the trade-off instead.
 - Convert "may have failed" into "failed", or "could be caused by X" into "X is the cause" — losing a hedge changes the claim.
+- Resolve a genuine ambiguity by picking the more plausible reading. If context does not decide between two readings, the output flags both with `Ambiguous:` — choosing one is adding information.
 - Guarantee an aerospace/defense-grade STE-compliant document; this is a general-purpose clarity tool inspired by STE, not a certified STE authoring tool.
 - Make weak content true or useful. STE fixes the *form* of a text, not its substance. A hollow paragraph rewritten under these rules becomes a clean, short, well-punctuated hollow paragraph. If the text has nothing to say, no rewrite fixes that — say so instead of polishing it.
 - Shorten past the point of clarity. Cutting words is not the goal; removing ambiguity is. Past a certain point compression starts costing the reader time rather than saving it, so stop when the sentence is unambiguous, not when it is shortest.
