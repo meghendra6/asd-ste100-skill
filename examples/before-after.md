@@ -32,7 +32,7 @@ Note what is *not* flagged: "will attempt to" and "may resolve". Those are hedge
 **After:**
 > The tool tries to synchronize state across the configured backends. If it finds a conflict, it reads the configured strategy. If the strategy allows automatic resolution, the tool may resolve the conflict without a user. If the tool does not resolve the conflict, it reports the conflict for manual review.
 
-The last sentence branches on whether the conflict was resolved, not on what the strategy allows. That is what "or otherwise" meant in the original: the fallback covers a permitted resolution that still did not happen.
+The last sentence branches on whether the conflict was resolved, not on what the strategy allows. "Or otherwise" in the original can cover two cases: the strategy forbids automatic resolution, or the strategy allows it and the tool still did not resolve. The rewrite does not choose between them — under both readings, a conflict that is not resolved gets reported. When a phrasing that stays true and complete under every reading exists, use it, and no `Ambiguous:` line is needed. Example E shows the case where no such phrasing exists.
 
 ### Example B — Error message
 
@@ -99,7 +99,7 @@ Flavored mode kept the explanatory rhythm and did not force one fixed term per c
 >
 > Ambiguous: "it" can be the client or the server. The source does not say which system logs the request.
 
-The normal STE fix for an unclear pronoun is to replace it with the actor's name. Here that fix is blocked: the source never names the actor, and both readings are plausible. Writing "the server logs the request" would read perfectly and might be wrong — a rewrite that resolves an ambiguity has quietly added a claim, which is the same failure as inventing a fact. The `Ambiguous:` line keeps the gap visible so a human (or the source's author) can close it.
+The normal STE fix for an unclear pronoun is to replace it with the actor's name. Here that fix is blocked: the source never names the actor, and both readings are plausible. Writing "the server logs the request" would read perfectly and might be wrong — a rewrite that resolves an ambiguity has quietly added a claim, which is the same failure as inventing a fact. A passive dodge ("then the request is logged") is also wrong: it is true under both readings, but only because it drops the actor the source meant to name, so the reader no longer sees that anything is missing. The `Ambiguous:` line keeps the gap visible so a human (or the source's author) can close it.
 
 ## How to Read These Examples
 

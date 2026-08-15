@@ -57,11 +57,11 @@ You get the rewritten text back and nothing else. To see which rules were applie
 
 ## Making It the Default
 
-A skill triggers when the model matches your request against its description — a probabilistic mechanism. If you want this discipline on every answer, do not rely on triggering. Do not rely on name-dropping either: field reports agree that a bare "use ASD-STE-100" line in `CLAUDE.md` rarely changes model behavior for long, because the model needs the rules in its context, not a reference to them. Style instructions also decay as a session grows — after roughly 100k tokens of context, output drifts back toward old habits.
+A skill triggers when the model matches your request against its description — a probabilistic mechanism. If you want this discipline on every answer, do not rely on triggering. Do not rely on name-dropping either: practitioners who tried a bare "use ASD-STE-100" line in `CLAUDE.md` report that it rarely changes model behavior for long, because the model needs the rules in its context, not a reference to them. Style instructions also decay as a session grows — one field report saw output drift back toward old habits after roughly 100k tokens of context.
 
 The reliable setup is three layers:
 
-1. **Always-on distilled rules.** Copy the block in [`assets/distilled-rules.md`](assets/distilled-rules.md) into your project's `CLAUDE.md`, or save it under `~/.claude/rules/` to apply globally. It is the STE-flavored core only. Do not make the always-on layer Strict — a globally strict register flattens conversational answers and is wrong for creative text (see Scope).
+1. **Always-on distilled rules.** Copy the rules block from [`assets/distilled-rules.md`](assets/distilled-rules.md) — everything below its `---` line — into your project's `CLAUDE.md`, or save it under `~/.claude/rules/` to apply globally. It is the STE-flavored core only. Do not make the always-on layer Strict — a globally strict register flattens conversational answers and is wrong for creative text (see Scope).
 2. **A re-anchor command.** Copy [`assets/ste-refresh.md`](assets/ste-refresh.md) to `~/.claude/commands/ste.md`. When a long session drifts, run `/ste` to re-assert the rules without restarting.
 3. **The full skill, on demand.** Keep the skill installed for explicit Strict rewrites — tool descriptions, error messages, inter-agent instructions — where the full rule set earns its cost.
 
@@ -69,7 +69,7 @@ Why not a hook that injects the rules into every prompt? It works, but it spends
 
 ## Verifying It Works
 
-Do not ask the model "repeat what you would have said without these rules" — it cannot know, and the answer proves nothing. Test with fresh context instead: run the same prompt in a new session with the rules installed and in a new session without them, then compare the outputs. Keep a few saved before/after pairs. Drift over a long session is normal; that is what `/ste` is for.
+Do not ask the model "repeat what you would have said without these rules" — it cannot know, and the answer proves nothing. Test with fresh context instead: run the same prompt in a new session with the rules installed and in a new session without them, then compare the outputs. Keep a few saved before/after pairs. Drift over a long session is normal. That is what `/ste` is for.
 
 ## Scope
 

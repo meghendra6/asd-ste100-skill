@@ -70,7 +70,7 @@ Apply the structural rules with confidence. Apply the lexical rules as a directi
 
 ### Project glossary — restores the lexical layer
 
-The lexical rules above are weak without a word list. A project can supply its own: a table of approved words and the synonyms they replace, kept in the project's `CLAUDE.md` or in a file the user names. When such a table exists, enforce it as a hard rule, not a preference — it plays the role of ASD's dictionary for that project, under STE's own terminology allowance.
+The lexical rules above are weak without a word list. A project can supply its own: a table of approved words and the synonyms they replace, kept in the project's `CLAUDE.md` or in a file the user names. When such a table exists, enforce it as a hard rule, not a preference. This goes beyond what STE's terminology allowance formally covers (domain-specific terms the base dictionary lacks) — it is a pragmatic substitute for the base dictionary this skill cannot reproduce.
 
 ```markdown
 | Use | Instead of |
@@ -90,7 +90,7 @@ Aircraft manuals never need present perfect, so the exclusion costs the standard
 
 ## Scan Checklist
 
-These nine habits cover most of what makes machine-written English hard to parse. Each one is mechanical: you can point at the exact word, punctuation mark, or sentence position that breaks the rule, with no judgment call. Scan for all nine before you rewrite anything.
+These nine habits cover most of what makes machine-written English hard to parse. Seven are mechanical: you can point at the exact word, punctuation mark, or sentence position that breaks the rule, with no judgment call. Items 8 and 9 need one judgment on top of the scan — whether the rejected claim is worth naming, and whether a term counts as established. Scan for all nine before you rewrite anything.
 
 1. **Synonym rotation** — the same thing gets several names in one document ("the user", "the customer", "the client"). The reader cannot tell whether they are one thing or three. Fix: pick one name, use it every time.
 2. **Hedge stacking** — helper verbs and qualifiers pile up until the sentence asserts nothing ("it is important to note that this may potentially help to improve"). Fix: state the claim, or delete it.
@@ -99,7 +99,7 @@ These nine habits cover most of what makes machine-written English hard to parse
 5. **Run-on sentences** — several ideas joined by semicolons or em dashes. Fix: one idea per sentence.
 6. **Soft phrasal verbs** — spin up, reach out, dive into, kick off. Fix: use the single plain verb (start, contact, read, begin).
 7. **Buried lede** — the paragraph's claim, command, or warning arrives in the last sentence, after the build-up. Fix: move it to the first sentence and let the explanation follow.
-8. **"Not X, but Y" framing** — the sentence spends its first half on a claim it then rejects ("It's not a cache problem, it's a race condition."). Fix: state the positive claim ("It is a race condition."). Keep the contrast only when the misconception is real, named, and worth correcting.
+8. **"It's not X, it's Y" framing** — the sentence spends its first half on a claim it then rejects ("It's not a cache problem, it's a race condition."). Fix: state the positive claim ("It is a race condition."). Keep the contrast only when the misconception is real, named, and worth correcting.
 9. **Coined labels** — a new term invented and then used as if established ("the trust ladder", "the evidence boundary"). Fix: replace it with a plain description, or define it once at first use and reuse it unchanged.
 
 ## Process
@@ -110,7 +110,7 @@ These nine habits cover most of what makes machine-written English hard to parse
 4. Rewrite each flagged sentence to fix the violation while preserving the original meaning exactly. If a rewrite would drop necessary precision (a safety condition, a scope qualifier, a number), keep the longer phrasing and flag it instead of silently simplifying.
    - **Check modality before you commit to a rewrite.** Hedges ("may", "could", "sometimes", "is likely to") carry the author's confidence, and confidence is content. A shorter sentence that upgrades a hedge to a fact is not a simplification — it is a different claim. This is the most common way a well-intentioned STE rewrite goes wrong, because hedges are exactly what a length cap tempts you to cut.
    - Never add a fact the source did not state. A rewrite that reads better because it supplies a cause, a frequency, or a mechanism has stopped being a rewrite.
-   - **Never resolve a genuine ambiguity by choosing a reading.** When a sentence has two readings and the context does not decide between them, picking the more plausible one adds a claim the source did not make — the same failure as inventing a fact, in quieter form. Keep the ambiguity visible: flag it with an `Ambiguous:` line (see Output Format), and ask the author when a channel exists.
+   - **Never resolve a genuine ambiguity by choosing a reading.** When a sentence has two readings, picking the more plausible one adds a claim the source did not make — the same failure as inventing a fact, in quieter form. The test: context resolves an ambiguity only when the other readings produce text that is self-contradictory or clearly nonsensical. When two readings both make sense, first look for a phrasing that stays true and complete under both — Example A in `examples/before-after.md` does this. If every both-readings phrasing works only by dropping the disputed information (as a passive drops the actor), keep the ambiguity visible with an `Ambiguous:` line instead (see Output Format).
 5. Output the rewritten text (see Output Format). Keep the mode choice and the rule analysis internal unless the user asked to see them.
 6. If the input already complies, say so — do not force changes onto compliant text.
 
@@ -120,8 +120,8 @@ These nine habits cover most of what makes machine-written English hard to parse
 
 Two permitted additions, each a single line after the text, omitted when there is nothing to report:
 
-- `Kept as-is:` — step 4 kept a longer phrasing on purpose; name the phrase and the precision that would have been lost.
-- `Ambiguous:` — the source has a sentence with two readings that context cannot resolve; name both readings. Do not silently rewrite to one of them — choosing a reading adds a claim the source did not make.
+- `Kept as-is:` — step 4 kept a longer phrasing on purpose. Name the phrase and the precision that would have been lost.
+- `Ambiguous:` — the source has a sentence with two readings that context cannot resolve, and no phrasing covers both. Name both readings. Do not silently rewrite to one of them — choosing a reading adds a claim the source did not make.
 
 **On request: the rule table.** When the user asks to see the reasoning — "show the diff", "which rules did it break", "explain the changes", "before/after" — output this table instead:
 
@@ -150,7 +150,7 @@ Follow the table with a one-line note on anything you deliberately did **not** s
 - Simplify creative, marketing, or persuasive copy where voice and nuance are the point.
 - Silently drop a safety condition, exception, or scope qualifier to shorten a sentence — it will flag the trade-off instead.
 - Convert "may have failed" into "failed", or "could be caused by X" into "X is the cause" — losing a hedge changes the claim.
-- Resolve a genuine ambiguity by picking the more plausible reading. If context does not decide between two readings, the output flags both with `Ambiguous:` — choosing one is adding information.
+- Resolve a genuine ambiguity by picking the more plausible reading. If context does not decide between two readings, the output uses a phrasing that is true and complete under both, or flags both with `Ambiguous:` — silently choosing one is adding information.
 - Guarantee an aerospace/defense-grade STE-compliant document; this is a general-purpose clarity tool inspired by STE, not a certified STE authoring tool.
 - Make weak content true or useful. STE fixes the *form* of a text, not its substance. A hollow paragraph rewritten under these rules becomes a clean, short, well-punctuated hollow paragraph. If the text has nothing to say, no rewrite fixes that — say so instead of polishing it.
 - Shorten past the point of clarity. Cutting words is not the goal; removing ambiguity is. Past a certain point compression starts costing the reader time rather than saving it, so stop when the sentence is unambiguous, not when it is shortest.
