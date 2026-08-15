@@ -1,6 +1,6 @@
 # ASD-STE100 Skill — Simplified Technical English for Agent Output
 
-A Claude Code skill that rewrites dense, ambiguous English into [ASD-STE100 Simplified Technical English](https://www.asd-ste100.org/) (STE) — the controlled-language standard the aerospace and defense industry built so aircraft maintenance instructions cannot be misread.
+A Claude Code skill that rewrites dense, ambiguous English into [ASD-STE100 Simplified Technical English](https://www.asd-ste100.org/) (STE) — the controlled-language standard the aerospace and defense industry built so aircraft maintenance instructions cannot be misread. It applies the same discipline to Korean text through a ruleset built for this skill (see Korean Support below).
 
 This skill repurposes that same discipline for a different reader: an **AI agent** parsing another agent's output, a tool description, an error message, or an inter-agent instruction, with no human in the loop to resolve ambiguity.
 
@@ -21,11 +21,12 @@ More examples, including illustrations of the official STE rules themselves, in 
 
 ## What This Skill Does
 
-1. Picks a mode — **Strict** for procedures, error messages, and tool descriptions; **STE-flavored** for READMEs, PR descriptions, and explanatory prose, which keeps the sentence discipline but not the fixed-vocabulary lockdown.
-2. Reads the input English text for meaning.
-3. Flags every rule violation sentence-by-sentence: ambiguous word choice, present-perfect/complex tense, passive voice with an unclear actor, multi-instruction sentences, oversized noun clusters, dropped words, sentences over length, phrasal verbs, nominalized actions, semicolons, hedge stacks, marketing adjectives and candor markers, buried conclusions, "it's not X, it's Y" framing, and coined labels used without definition.
-4. Rewrites each flagged sentence — without dropping any fact, condition, or scope qualifier from the original. If a shorter phrasing would lose required precision, it keeps the longer phrasing and flags the trade-off instead of silently simplifying. If a sentence has two readings that context cannot resolve, it does not pick one — choosing a reading adds a claim the source did not make.
-5. Outputs the rewritten text on its own — no preamble, no mode announcement, no change summary — plus a one-line `Kept as-is:` note when it deliberately left something unsimplified, and a one-line `Ambiguous:` note naming both readings when the source is genuinely ambiguous.
+1. Picks the ruleset by the language of the **target text** — [`references/rules-ko.md`](references/rules-ko.md) for Korean, [`references/rules-en.md`](references/rules-en.md) for English. A Korean conversation that asks for an English error message gets the English rules.
+2. Picks a mode — **Strict** for procedures, error messages, and tool descriptions; **STE-flavored** for READMEs, PR descriptions, and explanatory prose, which keeps the sentence discipline but not the fixed-vocabulary lockdown.
+3. Reads the input text for meaning.
+4. Flags every rule violation sentence-by-sentence: ambiguous word choice, present-perfect/complex tense, passive voice with an unclear actor, multi-instruction sentences, oversized noun clusters, dropped words, sentences over length, phrasal verbs, nominalized actions, semicolons, hedge stacks, marketing adjectives and candor markers, buried conclusions, "it's not X, it's Y" framing, and coined labels used without definition.
+5. Rewrites each flagged sentence — without dropping any fact, condition, or scope qualifier from the original. If a shorter phrasing would lose required precision, it keeps the longer phrasing and flags the trade-off instead of silently simplifying. If a sentence has two readings that context cannot resolve, it does not pick one — choosing a reading adds a claim the source did not make.
+6. Outputs the rewritten text on its own — no preamble, no mode announcement, no change summary — plus a one-line `Kept as-is:` note when it deliberately left something unsimplified, and a one-line `Ambiguous:` note naming both readings when the source is genuinely ambiguous. Korean output uses the localized labels `유지:` and `중의성:`.
 
 Ask for the reasoning ("show the diff", "which rules did it break") and it outputs a before/after table naming each rule instead.
 
@@ -34,6 +35,18 @@ The structural rules it checks are mechanical — you can point at the word or p
 It does **not** reproduce ASD's official ~900-word approved dictionary. The standard is free to obtain but not free to redistribute: Issue 9 permits reproduction only with ASD's written authority, or by eight listed categories of organisation that this project does not belong to. This skill applies the underlying *principle* (plainest available word, used the same way every time) rather than checking against a fixed word list. For certified STE-compliant documentation, use the real standard.
 
 Full rule summary and citations: [`references/writing-rules.md`](references/writing-rules.md).
+
+## Korean Support
+
+STE is an English-only standard — its dictionary layer (900 approved English words) has no Korean counterpart, and no official Korean controlled-language standard exists. So the Korean side of this skill is an **adaptation, not a translation**: [`references/rules-ko.md`](references/rules-ko.md) transfers STE's structural discipline to Korean grammar and adds rules for the ambiguity sources Korean has and English does not:
+
+- **주어·목적어 명시** — Korean drops subjects and objects grammatically, which makes omission the language's biggest ambiguity source for a machine reader.
+- **연결어미 분리** — clause chains built on "-고", "-며", "-는데" get split into single-claim sentences.
+- **이중피동 금지** — the double passive ("~되어지다") is banned outright, and plain passives need a genuinely unknown actor.
+- **번역투 대응표** — a replacement table for translationese ("~하는 것을 가능하게 합니다" → "~할 수 있습니다").
+- **기술 용어는 영어 그대로** — established technical terms (scheduler, prefill) stay in English. Public-sector plain-Korean guidelines recommend translating them into Korean; this skill deliberately does not follow that recommendation, because forced translation cuts the link to source material and adds ambiguity in technical writing.
+
+Sentence-length caps are counted in 어절 (지시문 ≤12, 설명문 ≤20) — the skill's own calibration, mirroring STE's 20/25-word caps. Korean output uses localized labels: `유지:` for `Kept as-is:`, `중의성:` for `Ambiguous:`. Worked examples: [`examples/before-after-ko.md`](examples/before-after-ko.md).
 
 ## Installation
 
@@ -49,7 +62,11 @@ Trigger with a request to simplify or clarify English text:
 Disambiguate this tool description
 Rewrite this error message so an agent can't misparse it
 Apply ASD-STE100 to this instruction
+이 에러 메시지를 기계가 오독하지 않게 고쳐줘
+이 도구 설명의 중의성을 제거해줘
 ```
+
+The language of the text you hand it — not the language you ask in — selects the ruleset.
 
 Or paste text and ask Claude to "disambiguate this" / "apply STE100 to this" / "reduce ambiguity in this output."
 
@@ -65,6 +82,8 @@ The reliable setup is three layers:
 2. **A re-anchor command.** Copy [`assets/ste-refresh.md`](assets/ste-refresh.md) to `~/.claude/commands/ste.md`. When a long session drifts, run `/ste` to re-assert the rules without restarting.
 3. **The full skill, on demand.** Keep the skill installed for explicit Strict rewrites — tool descriptions, error messages, inter-agent instructions — where the full rule set earns its cost.
 
+Korean-primary users: use [`assets/distilled-rules-ko.md`](assets/distilled-rules-ko.md) and [`assets/ste-refresh-ko.md`](assets/ste-refresh-ko.md) instead. The Korean distilled block includes a short English appendix, because commit messages, code comments, and error strings stay English inside a Korean session.
+
 Why not a hook that injects the rules into every prompt? It works, but it spends tokens every turn to do what a `CLAUDE.md` block does once per session.
 
 ## Verifying It Works
@@ -73,7 +92,7 @@ Do not ask the model "repeat what you would have said without these rules" — i
 
 ## Scope
 
-Built for: agent-to-agent messages, tool/function descriptions, error messages, system prompts, inter-agent instructions — any English text a machine or non-native reader has to parse without a human to ask.
+Built for: agent-to-agent messages, tool/function descriptions, error messages, system prompts, inter-agent instructions — any English or Korean text a machine or non-native reader has to parse without a human to ask.
 
 Not built for: creative writing, marketing copy, or anything where voice and nuance are the point — STE is deliberately flat and literal by design.
 
