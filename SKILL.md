@@ -38,7 +38,7 @@ Pick a mode before rewriting. If the user does not say which, infer from the tex
 
 **STE-flavored** — READMEs, PR descriptions, changelogs, explanatory prose. Apply the structural rules in full and treat the lexical rules as advisory (see Rule Structure for that split). In practice that means keeping the length caps, active voice, explicit actors, main-point-first order, and single-claim sentences, while dropping the one-word-one-meaning lockdown: prose needs some range, and a strict rewrite of prose reads as a personality transplant rather than a clarification.
 
-The two modes and the structural/lexical split are the same distinction seen from two directions. The split says which rules this skill can verify without a fixed word list; the modes say which of them to enforce for a given kind of text.
+The two modes and the structural/lexical split are the same distinction seen from two directions. The split says which rules this skill can verify without a fixed word list. The modes say which of them to enforce for a given kind of text.
 
 ## Source and Scope
 
@@ -52,7 +52,7 @@ Instead, this skill applies the *underlying principle* (pick the plainest, most 
 
 ## Rule Structure
 
-Both rule files split their rules the same way, and this skill can only fully deliver one side of the split. **Structural rules** are self-contained: they describe sentence shape, and you can apply them from the description alone. **Lexical rules** need a word list to be checkable — for English, ASD's dictionary, which this skill does not reproduce; for Korean, no such list exists. Without a list, the lexical rules degrade from a checkable standard into a preference for plain, consistent words.
+Both rule files split their rules the same way, and this skill can only fully deliver one side of the split. **Structural rules** are self-contained: they describe sentence shape, and you can apply them from the description alone. **Lexical rules** need a word list to be checkable. For English, that list is ASD's dictionary, which this skill does not reproduce. For Korean, no such list exists. Without a list, the lexical rules degrade from a checkable standard into a preference for plain, consistent words.
 
 Apply the structural rules with confidence. Apply the lexical rules as a direction of travel, and say so in your output rather than implying compliance you cannot verify. Each rule file also carries a nine-item scan checklist of the habits that most often make machine-written text hard to parse — scan for all nine before you rewrite anything.
 
@@ -129,8 +129,8 @@ Follow the table with a one-line note on anything you deliberately did **not** s
 
 ## Additional Resources
 
-- **`references/rules-en.md`** — the English rule tables: structural rules, lexical rules, tense rules, and the nine-item scan checklist.
 - **`references/rules-ko.md`** — the Korean rule tables: 구조 규칙, 어휘 규칙, 번역투 대응표, 스캔 체크리스트, and the localized output labels.
+- **`references/rules-en.md`** — the English rule tables: structural rules, lexical rules, tense rules, and the nine-item scan checklist.
 - **`references/writing-rules.md`** — fuller summary of the official standard's 9 rule sections and dictionary structure, with citations.
 - **`examples/before-after.md`** — worked English examples, including official STE examples and agent-output examples built for this skill.
 - **`examples/before-after-ko.md`** — worked Korean examples built for this skill.

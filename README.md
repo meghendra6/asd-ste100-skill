@@ -22,7 +22,7 @@ More examples, including illustrations of the official STE rules themselves, in 
 ## What This Skill Does
 
 1. Picks the ruleset by the language of the **target text** — [`references/rules-ko.md`](references/rules-ko.md) for Korean, [`references/rules-en.md`](references/rules-en.md) for English. A Korean conversation that asks for an English error message gets the English rules.
-2. Picks a mode — **Strict** for procedures, error messages, and tool descriptions; **STE-flavored** for READMEs, PR descriptions, and explanatory prose, which keeps the sentence discipline but not the fixed-vocabulary lockdown.
+2. Picks a mode — **Strict** for procedures, error messages, and tool descriptions. **STE-flavored**, for READMEs, PR descriptions, and explanatory prose, keeps the sentence discipline but not the fixed-vocabulary lockdown.
 3. Reads the input text for meaning.
 4. Flags every rule violation sentence-by-sentence: ambiguous word choice, present-perfect/complex tense, passive voice with an unclear actor, multi-instruction sentences, oversized noun clusters, dropped words, sentences over length, phrasal verbs, nominalized actions, semicolons, hedge stacks, marketing adjectives and candor markers, buried conclusions, "it's not X, it's Y" framing, and coined labels used without definition.
 5. Rewrites each flagged sentence — without dropping any fact, condition, or scope qualifier from the original. If a shorter phrasing would lose required precision, it keeps the longer phrasing and flags the trade-off instead of silently simplifying. If a sentence has two readings that context cannot resolve, it does not pick one — choosing a reading adds a claim the source did not make.
@@ -44,7 +44,7 @@ STE is an English-only standard — its dictionary layer (900 approved English w
 - **연결어미 분리** — clause chains built on "-고", "-며", "-는데" get split into single-claim sentences.
 - **이중피동 금지** — the double passive ("~되어지다") is banned outright, and plain passives need a genuinely unknown actor.
 - **번역투 대응표** — a replacement table for translationese ("~하는 것을 가능하게 합니다" → "~할 수 있습니다").
-- **기술 용어는 영어 그대로** — established technical terms (scheduler, prefill) stay in English. Public-sector plain-Korean guidelines recommend translating them into Korean; this skill deliberately does not follow that recommendation, because forced translation cuts the link to source material and adds ambiguity in technical writing.
+- **기술 용어는 영어 그대로** — established technical terms (scheduler, prefill) stay in English. Public-sector plain-Korean guidelines recommend translating them into Korean. This skill deliberately does not follow that recommendation, because forced translation cuts the link to source material and adds ambiguity in technical writing.
 
 Sentence-length caps are counted in 어절 (지시문 ≤12, 설명문 ≤20) — the skill's own calibration, mirroring STE's 20/25-word caps. Korean output uses localized labels: `유지:` for `Kept as-is:`, `중의성:` for `Ambiguous:`. Worked examples: [`examples/before-after-ko.md`](examples/before-after-ko.md).
 
@@ -56,7 +56,7 @@ git clone https://github.com/danyuchn/asd-ste100-skill ~/.claude/skills/asd-ste1
 
 ## Usage
 
-Trigger with a request to simplify or clarify English text:
+Trigger with a request to simplify or clarify English or Korean text:
 
 ```
 Disambiguate this tool description

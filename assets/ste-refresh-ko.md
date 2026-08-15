@@ -12,6 +12,7 @@ description: 긴 세션에서 문체가 흐트러졌을 때 작성 규칙을 다
 - 한 대상에 한 이름만 쓴다. 번역투를 쓰지 않는다. 기술 용어는 영어 그대로 둔다.
 - 마케팅 형용사와 태도 표지를 쓰지 않는다. "~가 아니라 ~이다" 구문을 피한다.
 - 정의 없는 신조어를 만들지 않는다. 추측의 강도는 원문 그대로 유지한다.
-- 영어 텍스트(커밋 메시지, 코드 주석, 에러 문자열)에는: main point first, one claim per sentence, active voice, no phrasal verbs, no semicolons.
 
-한 문장으로 확인하고 하던 작업을 계속하라. 이전 메시지를 다시 쓰지 마라.
+영어 텍스트(커밋 메시지, 코드 주석, 에러 문자열)에는 이 규칙을 적용하라: main point first, one claim per sentence, active voice, no phrasal verbs, no semicolons.
+
+한 문장으로 확인하라. 그 다음 하던 작업을 계속하라. 이전 메시지를 다시 쓰지 마라.
