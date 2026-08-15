@@ -44,7 +44,9 @@ STE is an English-only standard — its dictionary layer (900 approved English w
 - **연결어미 분리** — clause chains built on "-고", "-며", "-는데" get split into single-claim sentences.
 - **이중피동 금지** — the double passive ("~되어지다") is banned outright, and plain passives need a genuinely unknown actor.
 - **번역투 대응표** — a replacement table for translationese ("~하는 것을 가능하게 합니다" → "~할 수 있습니다").
-- **기술 용어는 영어 그대로** — established technical terms (scheduler, prefill) stay in English. Public-sector plain-Korean guidelines recommend translating them into Korean. This skill deliberately does not follow that recommendation, because forced translation cuts the link to source material and adds ambiguity in technical writing.
+- **기술 용어는 영어 그대로** — technical terms (scheduler, prefill, worker) stay in English script, and awkward Hangul transliterations (워커, 다운스트림) get rewritten back to English. Only fully established ones (에이전트, 큐) stay in Hangul. Public-sector plain-Korean guidelines recommend translating terms into Korean. This skill deliberately does not follow that recommendation, because forced translation cuts the link to source material and adds ambiguity in technical writing.
+
+The ruleset's top principle is naturalness: a rewrite that reads like translated Korean is a failed rewrite, even when every mechanical rule passes. Imperatives use "~하세요", not the stiff "~하십시오".
 
 Sentence-length caps are counted in 어절 (지시문 ≤12, 설명문 ≤20) — the skill's own calibration, mirroring STE's 20/25-word caps. Korean output uses localized labels: `유지:` for `Kept as-is:`, `중의성:` for `Ambiguous:`. Worked examples: [`examples/before-after-ko.md`](examples/before-after-ko.md).
 
