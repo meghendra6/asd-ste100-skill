@@ -1,7 +1,7 @@
 ---
 name: asd-ste100
 description: "Use when English or Korean text must be parsed without a human to resolve ambiguity — tool descriptions, error messages, inter-agent instructions, prompts, status reports — and misreading has a real cost, or when text reads as dense, hedged, or easy to misparse. Triggers: disambiguate, STE100 rewrite, apply Simplified Technical English, plain-language rewrite, rewrite so an agent cannot misread this, 문장 다듬기, 쉬운 한국어로, 중의성 제거, 기계가 오독하지 않게. Not for creative or marketing copy."
-version: 0.6.0
+version: 0.7.0
 ---
 
 # Simplified Technical English (ASD-STE100) — English and Korean
@@ -44,7 +44,7 @@ The two modes and the structural/lexical split are the same distinction seen fro
 
 This skill encodes the **rule categories** of ASD-STE100 Issue 9 (Jan 2025): 53 writing rules across 9 sections, backed by a dictionary of ~900 approved words (one meaning, one part of speech each). It does **not** reproduce that dictionary: the standard is free to obtain but not free to redistribute, so this skill applies the underlying principle — pick the plainest, most common word available and use it the same way every time — instead of checking a fixed word list. When exact ASD-approved wording matters (e.g. actual aircraft maintenance documentation), check word-by-word against [the official standard](https://www.asd-ste100.org/STE_downloads.html). The full rule summary, citations, and the redistribution terms that keep the dictionary out of this repo: `references/writing-rules.md`.
 
-**The Korean ruleset is this skill's own adaptation, not a standard.** There is no Korean edition of ASD-STE100 and no equivalent Korean controlled-language standard. `references/rules-ko.md` transfers STE's structural discipline to Korean grammar and adds rules for ambiguity sources Korean has and English does not (omitted subjects and objects, clause chaining, the double passive). It deliberately does not follow public-sector plain-Korean guidelines on points where they conflict with technical writing — most visibly, it keeps established technical terms in English instead of translating them into Korean.
+**The Korean ruleset is this skill's own adaptation, not a standard.** There is no Korean edition of ASD-STE100 and no equivalent Korean controlled-language standard. `references/rules-ko.md` transfers STE's structural discipline to Korean grammar and adds rules for ambiguity sources Korean has and English does not (omitted subjects and objects, clause chaining, the double passive), plus failure modes specific to machine-written Korean (particle-dropping telegraphic compression, noun-phrase sentence endings, em-dash overuse, metaphorical wording). It deliberately does not follow public-sector plain-Korean guidelines on points where they conflict with technical writing — most visibly, it keeps established technical terms in English instead of translating them into Korean.
 
 ## Rule Structure
 
