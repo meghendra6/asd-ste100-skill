@@ -1,7 +1,7 @@
 ---
 name: asd-ste100
 description: "Use when English or Korean text must be parsed without a human to resolve ambiguity — tool descriptions, error messages, inter-agent instructions, prompts, status reports — and misreading has a real cost, or when text reads as dense, hedged, or easy to misparse. Triggers: disambiguate, STE100 rewrite, apply Simplified Technical English, plain-language rewrite, rewrite so an agent cannot misread this, 문장 다듬기, 쉬운 한국어로, 중의성 제거, 기계가 오독하지 않게. Not for creative or marketing copy."
-version: 0.7.0
+version: 0.8.0
 ---
 
 # Simplified Technical English (ASD-STE100) — English and Korean
