@@ -53,8 +53,14 @@ Sentence-length caps are counted in 어절 (지시문 ≤12, 설명문 ≤20) �
 ## Installation
 
 ```bash
-git clone https://github.com/danyuchn/asd-ste100-skill ~/.claude/skills/asd-ste100
+git clone https://github.com/meghendra6/asd-ste100-skill
+cd asd-ste100-skill
+./install.sh ko        # or: en, or both
 ```
+
+The script installs all three layers described in Making It the Default: the skill into `~/.claude/skills/asd-ste100/` (runtime files only — no `.git`, no repo docs), the distilled always-on block (header stripped) into `~/.claude/rules/`, and the re-anchor command into `~/.claude/commands/`. It refuses to overwrite existing files unless you pass `--force`, and `--no-skill` / `--no-rules` / `--no-command` skip layers. If you already keep the always-on block under another file name, skip the rules layer — loading the same block twice wastes tokens every session.
+
+Manual alternative: clone anywhere and copy the pieces yourself as described in Making It the Default.
 
 ## Usage
 
@@ -74,6 +80,10 @@ Or paste text and ask Claude to "disambiguate this" / "apply STE100 to this" / "
 
 You get the rewritten text back and nothing else. To see which rules were applied, add "show the diff" or "explain the changes" to the request.
 
+### Project Glossary
+
+The lexical rules (one word per meaning) are weak without a word list. Give your project one: copy [`assets/glossary-template.md`](assets/glossary-template.md) into your project's `CLAUDE.md` and fill in the approved words. When a glossary exists, the skill enforces it as a hard rule in both directions — rewrites use only the approved word, and any listed synonym in the source is a violation.
+
 ## Making It the Default
 
 A skill triggers when the model matches your request against its description — a probabilistic mechanism. If you want this discipline on every answer, do not rely on triggering. Do not rely on name-dropping either: practitioners who tried a bare "use ASD-STE-100" line in `CLAUDE.md` report that it rarely changes model behavior for long, because the model needs the rules in its context, not a reference to them. Style instructions also decay as a session grows — one field report saw output drift back toward old habits after roughly 100k tokens of context.
@@ -91,6 +101,8 @@ Why not a hook that injects the rules into every prompt? It works, but it spends
 ## Verifying It Works
 
 Do not ask the model "repeat what you would have said without these rules" — it cannot know, and the answer proves nothing. Test with fresh context instead: run the same prompt in a new session with the rules installed and in a new session without them, then compare the outputs. Keep a few saved before/after pairs. Drift over a long session is normal. That is what `/ste` is for.
+
+The repo ships fixed regression inputs under [`tests/`](tests/) — one file per language, each case naming the properties its output must satisfy. Run them in a fresh session after any rule change. [`MAINTENANCE.md`](MAINTENANCE.md) maps which files carry which rule, so a rule change propagates to every layer.
 
 ## Scope
 
