@@ -25,8 +25,8 @@ More examples, including illustrations of the official STE rules themselves, in 
 2. Picks a mode — **Strict** for procedures, error messages, and tool descriptions. **STE-flavored**, for READMEs, PR descriptions, and explanatory prose, keeps the sentence discipline but not the fixed-vocabulary lockdown.
 3. Reads the input text for meaning.
 4. Flags every rule violation sentence-by-sentence: ambiguous word choice, present-perfect/complex tense, passive voice with an unclear actor, multi-instruction sentences, oversized noun clusters, dropped words, sentences over length, phrasal verbs, nominalized actions, semicolons, hedge stacks, marketing adjectives and candor markers, buried conclusions, "it's not X, it's Y" framing, and coined labels used without definition.
-5. Rewrites each flagged sentence — without dropping any fact, condition, or scope qualifier from the original. If a shorter phrasing would lose required precision, it keeps the longer phrasing and flags the trade-off instead of silently simplifying. If a sentence has two readings that context cannot resolve, it does not pick one — choosing a reading adds a claim the source did not make.
-6. Outputs the rewritten text on its own — no preamble, no mode announcement, no change summary — plus a one-line `Kept as-is:` note when it deliberately left something unsimplified, and a one-line `Ambiguous:` note naming both readings when the source is genuinely ambiguous. Korean output uses the localized labels `유지:` and `중의성:`.
+5. Rewrites each flagged sentence — without dropping any fact, condition, or scope qualifier from the original. If a shorter phrasing would lose required precision, it keeps the longer phrasing and flags the trade-off instead of silently simplifying. If a sentence has two readings that context cannot resolve, it does not pick one — choosing a reading adds a claim the source did not make. One narrow exception, for instructions only: when the source states a risk but no action, the rewrite may add the action that makes the warning executable — always disclosed, never silent.
+6. Outputs the rewritten text on its own — no preamble, no mode announcement, no change summary — plus a one-line `Kept as-is:` note when it deliberately left something unsimplified, a one-line `Ambiguous:` note naming both readings when the source is genuinely ambiguous, and a one-line `Added:` note naming any action added under the instruction exception. Korean output uses the localized labels `유지:`, `중의성:`, and `추가:`.
 
 Ask for the reasoning ("show the diff", "which rules did it break") and it outputs a before/after table naming each rule instead.
 
@@ -48,7 +48,7 @@ STE is an English-only standard — its dictionary layer (900 approved English w
 
 The ruleset's top principle is naturalness: a rewrite that reads like translated Korean is a failed rewrite, even when every mechanical rule passes. Imperatives use "~하세요", not the stiff "~하십시오".
 
-Sentence-length caps are counted in 어절 (지시문 ≤12, 설명문 ≤20) — the skill's own calibration, mirroring STE's 20/25-word caps. Korean output uses localized labels: `유지:` for `Kept as-is:`, `중의성:` for `Ambiguous:`. Worked examples: [`examples/before-after-ko.md`](examples/before-after-ko.md).
+Sentence-length caps are counted in 어절 (지시문 ≤12, 설명문 ≤20) — the skill's own calibration, mirroring STE's 20/25-word caps. Korean output uses localized labels: `유지:` for `Kept as-is:`, `중의성:` for `Ambiguous:`, `추가:` for `Added:`. Worked examples: [`examples/before-after-ko.md`](examples/before-after-ko.md).
 
 ## Installation
 

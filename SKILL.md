@@ -1,7 +1,7 @@
 ---
 name: asd-ste100
 description: "Use when English or Korean text must be parsed without a human to resolve ambiguity — tool descriptions, error messages, inter-agent instructions, prompts, status reports — and misreading has a real cost, or when text reads as dense, hedged, or easy to misparse. Triggers: disambiguate, STE100 rewrite, apply Simplified Technical English, plain-language rewrite, rewrite so an agent cannot misread this, 문장 다듬기, 쉬운 한국어로, 중의성 제거, 기계가 오독하지 않게. Not for creative or marketing copy."
-version: 0.8.0
+version: 0.9.0
 ---
 
 # Simplified Technical English (ASD-STE100) — English and Korean
@@ -74,8 +74,8 @@ Enforce it in both directions: use only the approved word in rewrites, and treat
 4. Walk it sentence by sentence. Flag every violation of the rule file's tables and every habit on its scan checklist. In STE-flavored mode, flag the lexical rules but do not enforce them.
 5. Rewrite each flagged sentence to fix the violation while preserving the original meaning exactly. If a rewrite would drop necessary precision (a safety condition, a scope qualifier, a number), keep the longer phrasing and flag it instead of silently simplifying.
    - **Check modality before you commit to a rewrite.** Hedges ("may", "could", "sometimes", "~일 수 있다", "~로 추정된다") carry the author's confidence, and confidence is content. A shorter sentence that upgrades a hedge to a fact is not a simplification — it is a different claim. This is the most common way a well-intentioned rewrite goes wrong, because hedges are exactly what a length cap tempts you to cut.
-   - Never add a fact the source did not state. A rewrite that reads better because it supplies a cause, a frequency, or a mechanism has stopped being a rewrite.
-   - **Never resolve a genuine ambiguity by choosing a reading.** When a sentence has two readings, picking the more plausible one adds a claim the source did not make — the same failure as inventing a fact, in quieter form. The test: context resolves an ambiguity only when the other readings produce text that is self-contradictory or clearly nonsensical. When two readings both make sense, first look for a phrasing that stays true and complete under both — Example A in `examples/before-after.md` does this. If every both-readings phrasing works only by dropping the disputed information (as a passive drops the actor), keep the ambiguity visible with an `Ambiguous:` line instead (see Output Format).
+   - Never add a fact the source did not state. A rewrite that reads better because it supplies a cause, a frequency, or a mechanism has stopped being a rewrite. One narrow exception, for instructions only: when the source states a risk but no action, you may add the action that makes the warning executable — and you must disclose it with an `Added:` line (see Output Format). The exception covers actions, never facts.
+   - **Never resolve a genuine ambiguity by choosing a reading.** When a sentence has two readings, picking the more plausible one adds a claim the source did not make — the same failure as inventing a fact, in quieter form. The test: context resolves an ambiguity only when the other readings produce text that is self-contradictory or clearly nonsensical. When two readings both make sense, first look for a phrasing that stays true and complete under both — Example A in `examples/before-after.md` does this (Korean counterpart: 예제 A in `examples/before-after-ko.md`). If every both-readings phrasing works only by dropping the disputed information (as a passive drops the actor), keep the ambiguity visible with an `Ambiguous:` line instead (see Output Format).
 6. Output the rewritten text (see Output Format). Keep the mode choice and the rule analysis internal unless the user asked to see them.
 7. If the input already complies, say so — do not force changes onto compliant text.
 
@@ -83,12 +83,13 @@ Enforce it in both directions: use only the approved word in rewrites, and treat
 
 **Default: the rewritten text, and nothing else.** Most callers want a result they can paste straight into a tool description, an error string, or a prompt. Print the simplified text on its own. Do not add a preamble about this skill, a mode announcement, a violation count, a summary of what changed, a rule table, or a closing offer to explain further.
 
-Two permitted additions, each a single line after the text, omitted when there is nothing to report:
+Three permitted additions, each a single line after the text, omitted when there is nothing to report:
 
 - `Kept as-is:` — step 5 kept a longer phrasing on purpose. Name the phrase and the precision that would have been lost.
 - `Ambiguous:` — the source has a sentence with two readings that context cannot resolve, and no phrasing covers both. Name both readings. Do not silently rewrite to one of them — choosing a reading adds a claim the source did not make.
+- `Added:` — the instruction exception in step 5 added an action the source did not state. Name the added sentence and the condition for removing it (usually: the source's silence was deliberate). Never add anything without this line.
 
-Labels follow the output language: Korean output uses `유지:` for `Kept as-is:` and `중의성:` for `Ambiguous:`. Meaning and conditions are identical.
+Labels follow the output language: Korean output uses `유지:` for `Kept as-is:`, `중의성:` for `Ambiguous:`, and `추가:` for `Added:`. Meaning and conditions are identical.
 
 **On request: the rule table.** When the user asks to see the reasoning — "show the diff", "which rules did it break", "explain the changes", "before/after" — output this table instead:
 
@@ -109,7 +110,7 @@ Follow the table with a one-line note on anything you deliberately did **not** s
 - Rewrite ambiguous or dense English or Korean into short, single-meaning, active-voice sentences, using the rule file for the target text's language.
 - Return the rewritten text alone by default, and name the rules it applied when the user asks.
 - Preserve every fact, condition, and scope qualifier in the original.
-- Preserve the strength of every hedge, and add no claim the source did not make.
+- Preserve the strength of every hedge, and add no claim the source did not make. The one permitted addition — an action that makes a stated warning executable, in instructions only — always carries an `Added:` line.
 - Suggest a one-line glossary entry for domain terms that must stay.
 
 **Will not:**
@@ -117,6 +118,7 @@ Follow the table with a one-line note on anything you deliberately did **not** s
 - Present the Korean ruleset as ASD-STE100 or as any official standard. STE is English-only. The Korean rules transfer its discipline, and the output must not claim more.
 - Simplify creative, marketing, or persuasive copy where voice and nuance are the point.
 - Silently drop a safety condition, exception, or scope qualifier to shorten a sentence — it will flag the trade-off instead.
+- Add content without disclosure. Facts (a cause, a frequency, a mechanism) are never added. Actions are added only under the instruction exception in Process step 5, and always with an `Added:` line.
 - Resolve a genuine ambiguity by picking the more plausible reading — the output covers both readings in one phrasing, or flags them with `Ambiguous:` (the test is in Process step 5).
 - Guarantee an aerospace/defense-grade STE-compliant document. This is a general-purpose clarity tool inspired by STE, not a certified STE authoring tool.
 - Make weak content true or useful. These rules fix a text's *form*, not its substance — a hollow paragraph comes out clean, short, and still hollow. Say so instead of polishing it.

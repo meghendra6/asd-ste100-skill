@@ -64,10 +64,12 @@ Note also that "may have failed" keeps a compound verb form that the simple-tens
 
 **After:**
 > Wait for the upstream job to finish with no errors. Then read the output artifact. Warning: a timeout can produce a partial artifact. Check that the artifact is complete before you use it.
+>
+> Added: "Check that the artifact is complete before you use it" is not in the source. The source warns about partial artifacts without naming an action, and the check makes the warning executable. If the source's silence was deliberate, drop the sentence.
 
 Two deliberate calls worth stating rather than hiding:
 - "should proceed to consume" became the imperative "read". STE permits this for instructions, where a recommendation addressed to the executing agent is a command. Do not make the same move in descriptive text.
-- The final sentence is **new**. The original warned about partial artifacts without saying what to do about it. Adding the check makes the warning actionable, but it is added content, so it is called out here rather than passed off as a rewrite. If the source's silence was deliberate, drop the sentence.
+- The final sentence is **new**, and the `Added:` line is what makes it legal. The instruction exception (SKILL.md, Process step 5) permits adding an action that makes a stated warning executable — never a fact — and only with this disclosure. Without the `Added:` line, this rewrite would be inventing content.
 
 ### Example D — README prose (STE-flavored mode)
 
@@ -104,3 +106,5 @@ The normal STE fix for an unclear pronoun is to replace it with the actor's name
 ## How to Read These Examples
 
 Part 1 shows the actual rules this skill is built on. Part 2 shows the transfer: the same discipline — one meaning per word, active voice, simple tense, one instruction per sentence, explicit conditions instead of buried subordinate clauses — makes machine-to-machine and cross-language text safer to parse, not just aircraft manuals.
+
+Example C also shows the one legal addition: an action that makes a stated warning executable, in instructions only, disclosed with an `Added:` line. Example E shows the `Ambiguous:` line. Both labels exist for the same reason — a rewrite must never smuggle in a claim the source did not make, so anything the rewrite could not derive from the source is either disclosed or left out.
